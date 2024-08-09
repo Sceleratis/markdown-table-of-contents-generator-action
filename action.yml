@@ -48,6 +48,7 @@ runs:
         if [ "${{ inputs.exclude_root }}" = "true" ]; then
           exclude_root_flag="--exclude-root"
         fi
+        echo "Exclude root flag: $exclude_root_flag"
         python ${{ github.action_path }}/scripts/toc-generator.py \
           --table-file "${{ inputs.table-file }}" \
           --root-path "${{ inputs.root-path }}" \
