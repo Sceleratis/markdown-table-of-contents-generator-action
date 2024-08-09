@@ -1,0 +1,60 @@
+name: 'Markdown Table of Contents Generator'
+description: 'Generates a table of contents for markdown files in a repository'
+author: 'Sky (Sceleratis)'
+inputs:
+  table-file:
+    description: 'Path to the markdown file containing the table of contents'
+    required: false
+    default: 'README.md'
+  root-path:
+    description: 'Path to the root directory of the project'
+    required: false
+    default: '.'
+  exclude-root:
+    description: 'Exclude the root directory from the table of contents'
+    required: false
+    default: 'false'
+  file-extension:
+    description: 'File extension of files to include in the table of contents'
+    required: false
+    default: '.md'
+  primary-file-name:
+    description: 'Name of file that should be treated as the primary Markdown file for a directory'
+    required: false
+    default: 'readme.md'
+  toc-start-tag:
+    description: 'Table of contents start tag'
+    required: false
+    default: '<!-- TOC START -->'
+  toc-end-tag:
+    description: 'Table of contents end tag'
+    required: false
+    default: '<!-- TOC END -->'
+  toc-ignore-file-name:
+    description: 'Name of file that indicates a directory should be ignored'
+    required: false
+    default: '.toc-ignore'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Run TOC Generator
+      run: |
+        python ${{ github.action_path }}/scripts/toc-generator.py \
+          --table-file "${{ inputs.table-file }}" \
+          --root-path "${{ inputs.root-path }}" \
+          --exclude-root "${{ inputs.exclude-root }}" \
+          --file-extension "${{ inputs.file-extension }}" \
+          --primary-file-name "${{ inputs.primary-file-name }}" \
+          --toc-start-tag "${{ inputs.toc-start-tag }}" \
+          --toc-end-tag "${{ inputs.toc-end-tag }}" \
+          --toc-ignore-file-name "${{ inputs.toc-ignore-file-name }}"
+      shell: bash
+
+branding:
+  icon: 'list'
+  color: 'blue'

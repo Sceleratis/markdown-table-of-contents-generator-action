@@ -1,0 +1,3 @@
+# Directory Primary File Example (README.md)
+
+This is an example of a directory primary Markdown file. By default, this is any file named `README.md` in the root of a directory. Rather than appearing as its own entry in the table of contents, the directory's entry will instead become a link to this file and any settings within this file will be applies to the entry for the directory. For example, adding `<!-- toc-name: SomeName -->` will make this directory appear as `SomeName` in the generated table of contents.
