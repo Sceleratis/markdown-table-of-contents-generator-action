@@ -25,11 +25,11 @@ inputs:
   toc-start-tag:
     description: 'Table of contents start tag'
     required: false
-    default: '<!-- TOC START -->'
+    default: '<!-- toc-start-->'
   toc-end-tag:
     description: 'Table of contents end tag'
     required: false
-    default: '<!-- TOC END -->'
+    default: '<!-- toc-end -->'
   toc-ignore-file-name:
     description: 'Name of file that indicates a directory should be ignored'
     required: false

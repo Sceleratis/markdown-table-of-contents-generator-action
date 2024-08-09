@@ -5,7 +5,7 @@
 Used to automatically generate a table of contents in a target file from all Markdown files in a directory and its subdirectories. 
 
 ## Table of Contents
-<!-- TOC START -->
+<!-- toc-start -->
 - [Repository Root](README.md)
   - [Examples](Examples/README.md)
     - [Renamed Directory Entry Example](Examples/Renamed%20Folder%20Example/README.md)
@@ -16,7 +16,7 @@ Used to automatically generate a table of contents in a target file from all Mar
       - [TheLastFile (3)](Examples/Ordered%20Group%20Example/TheLastFile%20%283%29.md)
     - Sub-Group Examples
       - [Plain-File](Examples/Sub-Group%20Examples/Plain-File.md)
-<!-- TOC END -->
+<!-- toc-end -->
 
 
 ## Adding Documentation Files
@@ -40,9 +40,9 @@ If you do not want a directory containing Markdown files to be indexed, simply a
 | `exclude-root` | Whether to exclude the root directory from the table of contents | `false` |
 | `file-extension` | The file extension to look for (e.g., "md" for Markdown files) | `.md` |
 | `primary-file-name` | The name of the main file to be listed first in the table of contents | `README.md` |
-| `toc-start-tag` | The tag that marks the beginning of the table of contents section | `<!-- TOC-START -->` |
-| `toc-end-tag` | The tag that marks the end of the table of contents section | `<!-- TOC-END -->` |
-| `toc-ignore-file-name` | The name of a file that, if present, indicates to ignore that directory | `.tocignore` |
+| `toc-start-tag` | The tag that marks the beginning of the table of contents section | `<!-- toc-start -->` |
+| `toc-end-tag` | The tag that marks the end of the table of contents section | `<!-- toc-end -->` |
+| `toc-ignore-file-name` | The name of a file that, if present, indicates to ignore that directory | `.toc-ignore` |
 
 ### Special Tags
 
