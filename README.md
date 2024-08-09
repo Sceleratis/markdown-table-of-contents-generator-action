@@ -6,19 +6,6 @@ Used to automatically generate a table of contents in a target file from all Mar
 
 ## Table of Contents
 <!-- toc-start -->
-- [Information](README.md)
-  - [Information](README.md)
-  - [Examples](README.md)
-    - [README](Examples/README.md)
-    - [Renamed Directory Entry Example](README.md)
-      - [Renamed Directory Entry Example](Examples/Renamed%20Folder%20Example/README.md)
-    - [Sub File Example](Examples/SubFileExample.md)
-    - Ordered Group Example
-      - [SomeFile (1)](Examples/Ordered%20Group%20Example/SomeFile%20%281%29.md)
-      - [AnotherFile (2)](Examples/Ordered%20Group%20Example/AnotherFile%20%282%29.md)
-      - [TheLastFile (3)](Examples/Ordered%20Group%20Example/TheLastFile%20%283%29.md)
-    - Sub-Group Examples
-      - [Plain-File](Examples/Sub-Group%20Examples/Plain-File.md)
 <!-- toc-end -->
 
 
@@ -26,7 +13,7 @@ Used to automatically generate a table of contents in a target file from all Mar
 
 Any Markdown (`.md`) files added to this repository will automatically be indexed and added to the above table of contents.
 
-Table of Contents is automatically removed and regenerated between the first set of table of content tags, as indicated by `<!-- TOC START -->` and `<!-- TOC END -->`. This process happens automatically via the `Update Table of Contents` action specified by the [update-toc.yml](.github/workflows/update-toc.yml) in [.github/workflows](.github/workflows) which you can copy for your own repository for the same functionality. This file will be automatically updated with every release to point toward the current release version of this action. If you would prefer to always be in sync with the main branch of this repository, replace the version number with `main`. 
+Table of Contents is automatically removed and regenerated between the first set of table of content tags, as indicated by `<!-- TOC START -->` and `<!-- TOC END -->`. This process happens automatically via the `Update Table of Contents` action specified by the [update-toc.yml](.github/workflows/update-toc.yml) in [.github/workflows](.github/workflows). You can copy for your own repository for the same functionality though the version in this repository's workflows folder is based on the main branch. If you would rather only use specific release snapshots, the [example-update-toc-action.yml](example-update-toc-action.yml) in this directory is automatically updated to point toward whatever the most current release is and is otherwise identical.
 
 Table update functionality is handled via the [toc-generator.py](scripts/toc-generator.py) Python (3.x) script in the [scripts](scripts) folder.
 
