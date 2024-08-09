@@ -8,29 +8,34 @@ on:
 jobs:
   update-example:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.WORKFLOW_FULL_ACCESS_PAT }}
+          token: ${{ secrets.WORKFLOW_PAT }}
+
+      - name: Debug information
+        run: |
+          echo "github.ref: ${{ github.ref }}"
+          echo "github.ref_name: ${{ github.ref_name }}"
+          echo "github.event.release.tag_name: ${{ github.event.release.tag_name }}"
 
       - name: Update update-toc.yml to target latest version
         run: |
-            VERSION="${{ github.ref_name }}"
-            echo "Updating to version: $VERSION"
-            sed -i 's/Sceleratis\/markdown-table-of-contents-generator-action@[^"'\''[:space:]]*/Sceleratis\/markdown-table-of-contents-generator-action@'"$VERSION"'/g' .github/workflows/update-toc.yml
-            cat .github/workflows/update-toc.yml
-  
+          VERSION="${{ github.event.release.tag_name }}"
+          echo "Updating to version: $VERSION"
+          sed -i 's/Sceleratis\/markdown-table-of-contents-generator-action@[^"'\''[:space:]]*/Sceleratis\/markdown-table-of-contents-generator-action@'"$VERSION"'/g' .github/workflows/update-toc.yml
+          echo "File contents after update:"
+          cat .github/workflows/update-toc.yml
+
       - name: Commit and push if changed
         run: |
-            git config --global user.name 'github-actions[bot]'
-            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-            git add .github/workflows/update-toc.yml
-            if git diff --staged --quiet; then
-              echo "No changes to commit"
-            else
-              git commit -m "Update Table of Contents to target version ${VERSION}"
-              git push
-            fi
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/update-toc.yml
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update Table of Contents to target version ${VERSION}"
+            git push
+          fi
