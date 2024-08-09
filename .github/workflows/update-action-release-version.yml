@@ -4,17 +4,16 @@ on:
   release:
     types: [published, edited]
 
-permissions:
-  contents: write
-  workflows: write 
-
 jobs:
   update-example:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          token: ${{ secrets.WORKFLOW_FULL_ACCESS_PAT }}
 
       - name: Update update-toc.yml to target latest version
         run: |
@@ -33,12 +32,8 @@ jobs:
             git commit -m "Update Table of Contents to target version ${VERSION}"
             git push origin temp-branch:main
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete temporary branch
         if: always()
         run: |
           git push origin --delete temp-branch || true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
