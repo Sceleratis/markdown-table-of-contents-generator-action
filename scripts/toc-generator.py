@@ -235,7 +235,8 @@ def generate_toc() -> List[TableEntry]:
             print(f"Found Primary File: {readme_file}")
 
             # Read the contents of the primary file.
-            with open(os.path.join(root, readme_file), 'r', encoding='utf-8') as file:
+            table_file = os.path.join(root, readme_file)
+            with open(table_file, 'r', encoding='utf-8') as file:
                 readme_contents = file.read()
             
             # Check if the primary file should be ignored.
