@@ -1,3 +1,5 @@
+name: Update Table of Contents Action Target Version
+
 on:
     release:
       types: [published, edited]
