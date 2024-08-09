@@ -18,8 +18,14 @@ jobs:
       - name: Generate Table of Contents
         uses: Sceleratis/markdown-table-of-contents-generator-action@main
         with:
-          exclude-root: true
           table-file: 'README.md'
+          root-path: '.'
+          exclude-root: false
+          file-extension: '.md'
+          primary-file-name: 'README.md'
+          toc-start-tag: '<!-- toc-start -->'
+          toc-end-tag: '<!-- toc-end -->'
+          toc-ignore-file-name: '.toc-ignore'
       
       - name: Commit and push if changes
         run: |

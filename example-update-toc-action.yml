@@ -19,7 +19,13 @@ jobs:
         uses: Sceleratis/markdown-table-of-contents-generator-action@v1.0.0-test-3
         with:
           table-file: 'README.md'
-          # Add any other inputs you want to customize
+          root-path: '.'
+          exclude-root: false
+          file-extension: '.md'
+          primary-file-name: 'README.md'
+          toc-start-tag: '<!-- toc-start -->'
+          toc-end-tag: '<!-- toc-end -->'
+          toc-ignore-file-name: '.toc-ignore'
       
       - name: Commit and push if changes
         run: |
