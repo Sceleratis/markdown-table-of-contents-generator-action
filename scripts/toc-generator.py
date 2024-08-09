@@ -199,73 +199,125 @@ def generate_toc() -> List[TableEntry]:
     """
     toc: Dict[str, TableEntry] = {}
     
+    # Determine the depth offset based on whether the root directory should be excluded.
     depth_offset = 1 if exclude_root_directory else 0
     
     for root, dirs, files in os.walk(root_path):
+        # Print the current directory being scanned.
+        print(f"Scanning Directory: {root}")
+
+        # Check if this is the root directory and if it should be excluded.
         if exclude_root_directory and root == root_path:
+            print(f"Excluding Root Directory: {root}")
             continue
         
+        # Check if the directory should be ignored.
         if not include_directory(root):
+            print(f"Ignoring Directory: {root}")
             continue
         
+        # Determine the depth of the current directory.
         depth = root[len(root_path):].count(os.sep) - depth_offset
         
+        # Generate the indentation for the current directory.
         indent = '  ' * depth
         
+        # Set the default order and entry for the directory.
         dir_order = sys.maxsize
         dir_entry = None
 
+        # Check if the directory contains a primary file.
+        print(f"Searching for Primary File: {primary_file_name}")
         readme_file = find_file(root, primary_file_name, case_sensitive=False)
-        if readme_file:
-            table_file = os.path.join(root, readme_file)
 
-            with open(table_file, 'r', encoding='utf-8') as file:
+        # If a primary file is found, use it as the primary file for the directory.
+        if readme_file:
+            print(f"Found Primary File: {readme_file}")
+
+            # Read the contents of the primary file.
+            with open(os.path.join(root, readme_file), 'r', encoding='utf-8') as file:
                 readme_contents = file.read()
             
+            # Check if the primary file should be ignored.
             if not ignore_file(readme_contents):
+                # Get the custom name for the primary file if it exists.
                 custom_name = get_custom_name(readme_contents) or os.path.basename(root)
                 
+                # Get the order group for the file.
                 dir_order = get_order(readme_contents)
                 
+                # Encode the path for the primary file.
                 relative_path = os.path.relpath(table_file, root_path).replace('\\', '/')
                 encoded_path = encode_path(relative_path)
 
+                # Create a new TableEntry for the primary file.
+                print(f"Creating Primary File Entry as Directory: {custom_name}")
                 dir_entry = TableEntry(depth, dir_order, f'{indent}- [{custom_name}]({encoded_path})')
-
+            else:
+                print(f"Ignoring File: {readme_file}")
+        
+        # If no valid primary file is found, use the directory name as the primary file.
         if not dir_entry:
+            print(f"Creating Normal Directory Entry: {os.path.basename(root)}")
             dir_entry = TableEntry(depth, dir_order, f'{indent}- {os.path.basename(root)}')
 
+        # Add the directory entry to the table of contents.
         toc[root] = dir_entry
 
+        # Get parent directory.   
         parent_dir = os.path.dirname(root)
+        print(f"Checking Parent Directory: {parent_dir}")
+
+        # Check if the parent directory is in the table of contents and add the directory entry as a child.
         if parent_dir in toc:
+            print(f"Adding Directory Entry as Child of: {parent_dir}")
             toc[parent_dir].children.append(dir_entry)
         
         for file in files:
             if file.endswith(file_extension) and file.lower() != primary_file_name:
+                # Get the full path of the file.
                 file_path = os.path.join(root, file)
+                print(f"Found File: {file_path}")
 
+                # Read the contents of the file.
+                print(f"Reading File Contents: {file_path}")
                 with open(file_path, 'r', encoding='utf-8') as f:
                     file_contents = f.read()
 
+                # Check if the file should be ignored.
                 if ignore_file(file_contents):
+                    print(f"Ignoring File: {file}")
                     continue
                 
+                # Get the order group for the file.
                 file_order = get_order(file_contents)
                 
+                # Get the custom name for the file if it exists.
                 custom_name = get_custom_name(file_contents) or os.path.splitext(file)[0]
                 
+                # Generate the indentation for the file.
                 relative_path = os.path.relpath(file_path, root_path).replace('\\', '/')
+
+                # Encode the path for the file.
                 encoded_path = encode_path(relative_path)
+
+                # Create a new TableEntry for the file.
                 file_entry = TableEntry(depth + 1, file_order, f'{indent}  - [{custom_name}]({encoded_path})')
+
+                # Add the file entry to the table of contents.
+                print(f"Adding File Entry: {file_entry}")
                 dir_entry.children.append(file_entry) 
-                
+    
+    # Sort the table of contents entries.
+    print("Sorting Table of Contents Entries")
     for dir_entry in toc.values():
         dir_entry.children.sort(key=lambda x: (x.order, x.line))
     
+    # Sort the root entries.
+    print("Sorting Root Entries")
     root_entries = [entry for entry in toc.values() if entry.depth == 0]
     root_entries.sort(key=lambda x: (x.order, x.line))
-
+    
     return root_entries
 
 def flatten_toc(entries: List[TableEntry]) -> List[str]:
@@ -280,6 +332,7 @@ def flatten_toc(entries: List[TableEntry]) -> List[str]:
     """
     result = []
     for entry in entries:
+        print(f"Got Table of Contents Entry: {entry.line}")
         result.append(entry.line)
         result.extend(flatten_toc(entry.children))
     return result
@@ -291,26 +344,40 @@ def update_contents():
     """
 
     # Find the target Markdown file to update.
+    print(f"Searching for Target File: {table_file}")
     target_file = find_file(root_path, table_file, case_sensitive=False)
 
     # Read the target file's contents.
+    print(f"Reading Target File: {target_file}")
     with open(target_file, 'r', encoding='utf-8') as readme_file:
         readme_contents = readme_file.read()
 
     # Find the markers that indicate the start and end of the table of contents section
     # of the target file.
+    print(f"Searching for Table Start Tag: {toc_marker_start}")
     toc_start_index = readme_contents.index(toc_marker_start)
+
+    print(f"Searching for Table End Tag: {toc_marker_start}")
     toc_end_index = readme_contents.index(toc_marker_end)
 
     # Generate the new table of contents.
+    print("Generating Table of Contents")
     toc_entries = generate_toc()
+
+    # Flatten the table of contents into a list of strings.
+    print("Flattening Table of Contents")
     flattened_toc = flatten_toc(toc_entries)
 
     # Replace the old table of contents (if any) with our newly generated one.
+    print("Generating New Table of Contents String")
     new_toc = '\n'.join([toc_marker_start] + flattened_toc + [toc_marker_end])
+
+    # Update the target file's contents to include the new table of contents.
+    print("Updating Table of Contents in Target File")
     updated_readme = readme_contents[:toc_start_index] + new_toc + readme_contents[toc_end_index + len(toc_marker_end):]
 
     # Update the target file's contents to include the updated Table of Contents.
+    print(f"Writing Updated Table of Contents to Target File: {target_file}")
     with open(target_file, 'w', encoding='utf-8') as readme_file:
         readme_file.write(updated_readme)
 
