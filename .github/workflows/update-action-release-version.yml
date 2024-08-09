@@ -7,12 +7,14 @@ on:
 jobs:
   update-example:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: Update example file
+      - name: Update update-toc.yml to target latest version
         run: |
           VERSION="${{ github.ref_name }}"
           sed -i 's/Sceleratis\/markdown-table-of-contents-generator-action@v[0-9.]*/Sceleratis\/markdown-table-of-contents-generator-action@'${VERSION}'/g' .github/workflows/update-toc.yml
