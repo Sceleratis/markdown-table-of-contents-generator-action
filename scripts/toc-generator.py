@@ -38,6 +38,9 @@ def main():
     global toc_marker_end
     global toc_ignore_directory_file
 
+    # Print passed arguments.
+    print(f"Passed Arguments: {' '.join(sys.argv[1:])}")
+
     # Define arguments.
     parser = argparse.ArgumentParser(description='Generate a table of contents for markdown files.')
     parser.add_argument('--table-file',             default='README.md',            help='Path to the markdown file containing the table of contents. (default: %(default)s)')
