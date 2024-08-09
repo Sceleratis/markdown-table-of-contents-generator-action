@@ -15,11 +15,13 @@ jobs:
       - name: Update example file
         run: |
           VERSION="${{ github.ref_name }}"
-          sed -i 's/Sceleratis\/markdown-table-of-contents-generator-action@v[0-9.]*/Sceleratis\/markdown-table-of-contents-generator-action@'${VERSION}'/g' update-toc.yml
+          sed -i 's/Sceleratis\/markdown-table-of-contents-generator-action@v[0-9.]*/Sceleratis\/markdown-table-of-contents-generator-action@'${VERSION}'/g' .github/workflows/update-toc.yml
         
       - name: Commit and push if changed
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add example-workflow.yml
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update example to use version ${VERSION}" && git push)
+          git add .github/workflows/update-toc.yml
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update .github/workflows/update-toc.yml to target ${VERSION}" && git push)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
