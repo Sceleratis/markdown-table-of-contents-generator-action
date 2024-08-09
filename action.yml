@@ -13,7 +13,7 @@ inputs:
   exclude-root:
     description: 'Exclude the root directory from the table of contents'
     required: false
-    default: 'false'
+    default: 'true'
   file-extension:
     description: 'File extension of files to include in the table of contents'
     required: false
