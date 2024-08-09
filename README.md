@@ -13,15 +13,28 @@ Used to automatically generate a table of contents of all Markdown files in a re
 
 Any Markdown (`.md`) files added to this repository will automatically be indexed and added to the above table of contents.
 
-Table of Contents is automatically removed and regenerated between the first set of table of content tags, as indicated by `<!-- TOC START -->` and `<!-- TOC END -->`. This process happens automatically via the `Update Table of Contents` action specified by the [update-toc.yml](.github/workflows/update-toc.yml) in [.github/workflows](.github/workflows). 
+Table of Contents is automatically removed and regenerated between the first set of table of content tags, as indicated by `<!-- TOC START -->` and `<!-- TOC END -->`. This process happens automatically via the `Update Table of Contents` action specified by the [update-toc.yml](.github/workflows/update-toc.yml) in [.github/workflows](.github/workflows) which you can copy for your own repository for the same functionality.
 
-Table update functionality is handled via the [update-readme-toc.py](scripts/toc-generator.py) Python script in [scripts/](scripts/)
+Table update functionality is handled via the [update-readme-toc.py](scripts/toc-generator.py) Python (3.x) script in [scripts/](scripts/)
 
 If a directory contains a `README.md` file, the directory will appear in the table of contents as a link pointing to the `README.md` file.
 
 If you do not want a directory containing Markdown files to be indexed, simply add a file named `.toc-ignore` to it.
 
 You can control how entries appear in the table of contents using special tags near the start of your file. These tags must appear at the start of the file.
+
+### Options
+
+| Argument | Description |
+|----------|-------------|
+| `table-file` | The file where the table of contents will be generated or updated |
+| `root-path` | The root path to start searching for files |
+| `exclude-root` | Whether to exclude the root directory from the table of contents |
+| `file-extension` | The file extension to look for (e.g., "md" for Markdown files) |
+| `primary-file-name` | The name of the main file to be listed first in the table of contents |
+| `toc-start-tag` | The tag that marks the beginning of the table of contents section |
+| `toc-end-tag` | The tag that marks the end of the table of contents section |
+| `toc-ignore-file-name` | The name of a file that, if present, indicates to ignore that directory |
 
 ### Table of Contents Control Tags
 

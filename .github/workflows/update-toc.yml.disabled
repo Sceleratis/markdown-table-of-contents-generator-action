@@ -14,18 +14,20 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v2
-      
-      - name: Generate Table of Contents
-        uses: Sceleratis/markdown-table-of-contents-generator-action@v1
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          table-file: 'README.md'
-          # Add any other inputs you want to customize
-      
+          python-version: '3.x'
+      #- name: Install Python dependencies
+      #  run: pip install -r scripts/requirements.txt # No requirements at the moment, so not needed.
+      - name: Update Table of Contents
+        run: python scripts/toc-generator.py
       - name: Commit and push if changes
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@users.noreply.github.com'
           git add README.md
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update Table of Contents" && git push)
+          git commit -m "Update Table of Contents" || exit 0
+          git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
