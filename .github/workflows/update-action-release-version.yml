@@ -1,30 +1,30 @@
 name: Update Table of Contents Action Target Version
 
 on:
-    release:
-        types: [published, edited]
-    workflow_dispatch:
+  release:
+    types: [published, edited]
+  workflow_dispatch:
 
 jobs:
-    update-example:
-        runs-on: ubuntu-latest
-        permissions:
-          contents: write
-        steps:
-         - uses: actions/checkout@v3
-            with:
-            fetch-depth: 0
-            token: ${{ secrets.WORKFLOW_FULL_ACCESS_PAT }}
+  update-example:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.WORKFLOW_FULL_ACCESS_PAT }}
 
-        - name: Update update-toc.yml to target latest version
+      - name: Update update-toc.yml to target latest version
         run: |
             VERSION="${{ github.ref_name }}"
             echo "Updating to version: $VERSION"
             sed -i 's/Sceleratis\/markdown-table-of-contents-generator-action@[^"'\''[:space:]]*/Sceleratis\/markdown-table-of-contents-generator-action@'"$VERSION"'/g' .github/workflows/update-toc.yml
             cat .github/workflows/update-toc.yml
   
-        - name: Commit and push if changed
-          run: |
+      - name: Commit and push if changed
+        run: |
             git config --global user.name 'github-actions[bot]'
             git config --global user.email 'github-actions[bot]@users.noreply.github.com'
             git add .github/workflows/update-toc.yml
