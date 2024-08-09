@@ -45,7 +45,7 @@ def main():
     parser = argparse.ArgumentParser(description='Generate a table of contents for markdown files.')
     parser.add_argument('--table-file',             default='README.md',            help='Path to the markdown file containing the table of contents. (default: %(default)s)')
     parser.add_argument('--root-path',              default='.',                    help='Path to the root directory of the project. (default: %(default)s)')
-    parser.add_argument('--exclude-root',           default=False,                  help='Include the root directory in the table of contents. (default: %(default)s)')
+    parser.add_argument('--exclude-root',           action='store_true',            help='Include the root directory in the table of contents. (default: %(default)s)')
     parser.add_argument('--file-extension',         default='.md',                  help='File extension of files to include in the table of contents. (default: %(default)s)')
     parser.add_argument('--primary-file-name',      default='README.md',            help='Name of file that should be treated as the primary Markdown file for a directory where if found the directory listing will become a link to that file. (default: %(default)s)')
     parser.add_argument('--toc-start-tag',          default='<!-- toc-start -->',   help='Table of contents start tag that indicates the start of the table of contents in the target file where the table of contents will be generated. (default: %(default)s)')
