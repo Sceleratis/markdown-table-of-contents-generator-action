@@ -18,7 +18,7 @@ jobs:
       - name: Generate Table of Contents
         uses: Sceleratis/markdown-table-of-contents-generator-action@main
         with:
-          table-file: 'README.md'
+          table-file: 'README.mderwer'
           exclude-root: 'true'
       
       - name: Commit and push if changes
