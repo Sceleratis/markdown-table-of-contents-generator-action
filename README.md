@@ -31,8 +31,6 @@ If a directory contains a `README.md` file, the directory will appear in the tab
 
 If you do not want a directory containing Markdown files to be indexed, simply add a file named `.toc-ignore` to it.
 
-You can control how entries appear in the table of contents using special tags near the start of your file. These tags must appear at the start of the file.
-
 ### Options
 
 | Argument | Description |
@@ -46,7 +44,52 @@ You can control how entries appear in the table of contents using special tags n
 | `toc-end-tag` | The tag that marks the end of the table of contents section |
 | `toc-ignore-file-name` | The name of a file that, if present, indicates to ignore that directory |
 
-### Table of Contents Control Tags
+### Special Tags
+
+You can control how entries appear in the table of contents using special tags near the start of your file. These tags must appear at the start of the file.
+
+These tags can also appear after whitespace or YAML front matter.
+
+For example,
+
+```markdown
+---
+author: "Some author"
+date: "2024-08-09"
+--- 
+
+<!-- some-tag: someValue -->
+```
+
+and 
+
+```markdown
+<!-- some-tag: someValue -->
+```
+
+are both valid, however
+
+```markdown
+Some random text.
+
+# Some Header
+
+<!-- some-tag: someValue -->
+```
+
+is not.
+
+Tags can also be combined.
+For example, 
+
+```markdown
+<!-- toc-name: SomeName -->
+<!-- toc-order: 1 -->
+```
+
+will set the entry name in the table of contents to `SomeName` and will set its order to `1` in its group. 
+
+Below you can find the current list of supported tags with examples and descriptions.
 
 | Tag | Example | Description |
 | --- | ------- | ----------- |
