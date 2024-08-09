@@ -50,10 +50,10 @@ jobs:
                 echo "No changes to commit"
               else
                 # Create a new branch
-                git checkout -b update-toc-version-${{ env.VERSION }}
+                git checkout -b main
                 git commit -m "Update Table of Contents to target version ${{ env.VERSION }}"
                 # Push the new branch
-                git push origin update-toc-version-${{ env.VERSION }}
+                git push origin main
                 # Create a pull request
                 gh pr create --title "Update Table of Contents to version ${{ env.VERSION }}" --body "Automatically generated PR to update the Table of Contents version." --base main --head update-toc-version-${{ env.VERSION }}
               fi
