@@ -1,8 +1,8 @@
-name: Update Example Action File
+name: Update Table of Contents Action Target Version
 
 on:
   release:
-    types: [published]
+    types: [published, edited]
 
 jobs:
   update-example:
@@ -10,7 +10,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -21,9 +21,7 @@ jobs:
         
       - name: Commit and push if changed
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add .github/workflows/update-toc.yml
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update .github/workflows/update-toc.yml to target ${VERSION}" && git push)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
