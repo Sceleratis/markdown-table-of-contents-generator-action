@@ -100,4 +100,4 @@ Below you can find the current list of supported tags with examples and descript
 
 ---
 
-[Back to top](#documentation)
+[Back to top](#table-of-contents)
