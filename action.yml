@@ -1,5 +1,5 @@
 name: 'Markdown Table of Contents Generator'
-description: 'Generates a table of contents for Markdown files in a repository'
+description: 'Generates a table of contents for Markdown files in a repository.'
 author: 'Sky (Sceleratis)'
 inputs:
   table-file:
