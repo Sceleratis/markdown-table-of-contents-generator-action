@@ -13,6 +13,7 @@ inputs:
   exclude-root:
     description: 'Exclude the root directory from the table of contents'
     required: false
+    default: 'false'
   file-extension:
     description: 'File extension of files to include in the table of contents'
     required: false
@@ -43,10 +44,14 @@ runs:
         python-version: '3.x'
     - name: Run TOC Generator
       run: |
+        exclude_root_flag=""
+        if [ "${{ inputs.exclude_root }}" = "true" ]; then
+          exclude_root_flag="--exclude-root"
+        fi
         python ${{ github.action_path }}/scripts/toc-generator.py \
           --table-file "${{ inputs.table-file }}" \
           --root-path "${{ inputs.root-path }}" \
-          --exclude-root "${{ inputs.exclude-root }}" \
+          $exclude_root_flag \
           --file-extension "${{ inputs.file-extension }}" \
           --primary-file-name "${{ inputs.primary-file-name }}" \
           --toc-start-tag "${{ inputs.toc-start-tag }}" \
