@@ -4,6 +4,10 @@ on:
   release:
     types: [published, edited]
   workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name of the release to target'
+        required: true
 
 jobs:
   update-example:
