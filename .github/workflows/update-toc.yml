@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Generate Table of Contents
-        uses: Sceleratis/markdown-table-of-contents-generator-action@v1.0.2
+        uses: Sceleratis/markdown-table-of-contents-generator-action@v1.0.0-test-1
         with:
           table-file: 'README.md'
           # Add any other inputs you want to customize
