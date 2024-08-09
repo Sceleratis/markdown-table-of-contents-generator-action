@@ -1,8 +1,8 @@
-<!-- toc-name: Repository Root; -->
+<!-- toc-name: Information; -->
 
-# Repository Markdown Table-of-Contents Generator
+# Markdown Table-of-Contents Generator
 
-Used to automatically generate a table of contents of all Markdown files in a repository. 
+Used to automatically generate a table of contents in a target file from all Markdown files in a directory and its subdirectories. 
 
 ## Table of Contents
 <!-- TOC START -->
@@ -100,4 +100,4 @@ Below you can find the current list of supported tags with examples and descript
 
 ---
 
-[Back to top](#table-of-contents)
+[Back to top](#markdown-table-of-contents-generator)
