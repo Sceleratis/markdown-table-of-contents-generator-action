@@ -1,13 +1,13 @@
 name: 'Markdown Table of Contents Generator'
-description: 'Generates a table of contents for markdown files in a repository'
+description: 'Generates a table of contents for Markdown files in a repository'
 author: 'Sky (Sceleratis)'
 inputs:
   table-file:
-    description: 'Path to the markdown file containing the table of contents'
+    description: 'Path to the Markdown file containing the table of contents'
     required: false
     default: 'README.md'
   root-path:
-    description: 'Path to the root directory of the project'
+    description: 'Path to the root directory of the project. By default, this is the current working directory.'
     required: false
     default: '.'
   exclude-root:
@@ -21,7 +21,7 @@ inputs:
   primary-file-name:
     description: 'Name of file that should be treated as the primary Markdown file for a directory'
     required: false
-    default: 'readme.md'
+    default: 'README.md'
   toc-start-tag:
     description: 'Table of contents start tag'
     required: false

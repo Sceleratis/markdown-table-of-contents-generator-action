@@ -1,10 +1,10 @@
 #!/bin/python3
 
 """
-Authors: Sky (Sceleratis) (sp@dvr.cx)
+Authors: Sky (Sceleratis) (sceleratis@gmail.com)
 Updated: 7/31/2024 23:05 EST
-Description: This script generate a table of contents in a Markdown file in the current working directory 
-             from Markdown files in the same directory and its subdirectories.
+Description: This script generates a table of contents in a target Markdown file
+             from Markdown files found within directories and subdirectories.
 """
 
 import os
@@ -44,7 +44,7 @@ def main():
     parser.add_argument('--root-path',              default='.',                    help='Path to the root directory of the project. (default: %(default)s)')
     parser.add_argument('--exclude-root',           default=False,                  help='Include the root directory in the table of contents. (default: %(default)s)')
     parser.add_argument('--file-extension',         default='.md',                  help='File extension of files to include in the table of contents. (default: %(default)s)')
-    parser.add_argument('--primary-file-name',      default='readme.md',            help='Name of file that should be treated as the primary Markdown file for a directory where if found the directory listing will become a link to that file. (default: %(default)s)')
+    parser.add_argument('--primary-file-name',      default='README.md',            help='Name of file that should be treated as the primary Markdown file for a directory where if found the directory listing will become a link to that file. (default: %(default)s)')
     parser.add_argument('--toc-start-tag',          default='<!-- TOC START -->',   help='Table of contents start tag that indicates the start of the table of contents in the target file where the table of contents will be generated. (default: %(default)s)')
     parser.add_argument('--toc-end-tag',            default='<!-- TOC END -->',     help='Table of contents end tag that indicates the start of the table of contents in the target file where the table of contents will be generated. (default: %(default)s)')
     parser.add_argument('--toc-ignore-file-name',   default='.toc-ignore',          help='Name of file that indicates a directory should be ignored. (default: %(default)s)')
@@ -287,12 +287,15 @@ def update_contents():
     Updates the table of contents in the target file.
     """
 
-    # Read the current README file's contents.
-    with open(table_file, 'r', encoding='utf-8') as readme_file:
+    # Find the target Markdown file to update.
+    target_file = find_file(root_path, table_file, case_sensitive=False)
+
+    # Read the target file's contents.
+    with open(target_file, 'r', encoding='utf-8') as readme_file:
         readme_contents = readme_file.read()
 
     # Find the markers that indicate the start and end of the table of contents section
-    # of the README.
+    # of the target file.
     toc_start_index = readme_contents.index(toc_marker_start)
     toc_end_index = readme_contents.index(toc_marker_end)
 
@@ -300,14 +303,15 @@ def update_contents():
     toc_entries = generate_toc()
     flattened_toc = flatten_toc(toc_entries)
 
-    # Replace the old table of contents with our newly generated one.
+    # Replace the old table of contents (if any) with our newly generated one.
     new_toc = '\n'.join([toc_marker_start] + flattened_toc + [toc_marker_end])
     updated_readme = readme_contents[:toc_start_index] + new_toc + readme_contents[toc_end_index + len(toc_marker_end):]
 
-    # Update the contents of the README.md file to include the updated Table of Contents.
-    with open(table_file, 'w', encoding='utf-8') as readme_file:
+    # Update the target file's contents to include the updated Table of Contents.
+    with open(target_file, 'w', encoding='utf-8') as readme_file:
         readme_file.write(updated_readme)
 
+    # Print a success message.
     print("Table of Contents has been updated successfully.")
 
 if __name__ == "__main__":

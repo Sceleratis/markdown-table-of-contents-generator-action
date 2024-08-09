@@ -25,7 +25,7 @@ Any Markdown (`.md`) files added to this repository will automatically be indexe
 
 Table of Contents is automatically removed and regenerated between the first set of table of content tags, as indicated by `<!-- TOC START -->` and `<!-- TOC END -->`. This process happens automatically via the `Update Table of Contents` action specified by the [update-toc.yml](.github/workflows/update-toc.yml) in [.github/workflows](.github/workflows) which you can copy for your own repository for the same functionality.
 
-Table update functionality is handled via the [update-readme-toc.py](scripts/toc-generator.py) Python (3.x) script in [scripts/](scripts/)
+Table update functionality is handled via the [toc-generator.py](scripts/toc-generator.py) Python (3.x) script in the [scripts](scripts) folder.
 
 If a directory contains a `README.md` file, the directory will appear in the table of contents as a link pointing to the `README.md` file.
 
@@ -33,16 +33,16 @@ If you do not want a directory containing Markdown files to be indexed, simply a
 
 ### Options
 
-| Argument | Description |
-|----------|-------------|
-| `table-file` | The file where the table of contents will be generated or updated |
-| `root-path` | The root path to start searching for files |
-| `exclude-root` | Whether to exclude the root directory from the table of contents |
-| `file-extension` | The file extension to look for (e.g., "md" for Markdown files) |
-| `primary-file-name` | The name of the main file to be listed first in the table of contents |
-| `toc-start-tag` | The tag that marks the beginning of the table of contents section |
-| `toc-end-tag` | The tag that marks the end of the table of contents section |
-| `toc-ignore-file-name` | The name of a file that, if present, indicates to ignore that directory |
+| Argument | Description | Default Value |
+|----------|-------------|---------------|
+| `table-file` | The file where the table of contents will be generated or updated | `README.md` |
+| `root-path` | The root path to start searching for files | `.` (Current working directory/Root of repository.) |
+| `exclude-root` | Whether to exclude the root directory from the table of contents | `false` |
+| `file-extension` | The file extension to look for (e.g., "md" for Markdown files) | `.md` |
+| `primary-file-name` | The name of the main file to be listed first in the table of contents | `README.md` |
+| `toc-start-tag` | The tag that marks the beginning of the table of contents section | `<!-- TOC-START -->` |
+| `toc-end-tag` | The tag that marks the end of the table of contents section | `<!-- TOC-END -->` |
+| `toc-ignore-file-name` | The name of a file that, if present, indicates to ignore that directory | `.tocignore` |
 
 ### Special Tags
 
