@@ -3,6 +3,7 @@ name: Update Table of Contents Action Target Version
 on:
   release:
     types: [published, edited]
+  workflow_dispatch:
 
 jobs:
   update-example:
