@@ -67,7 +67,8 @@ and
 <!-- some-tag: someValue -->
 ```
 
-are both valid, however
+are both valid. 
+However,
 
 ```markdown
 Some random text.
