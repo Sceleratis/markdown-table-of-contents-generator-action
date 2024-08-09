@@ -2,16 +2,14 @@ name: Update Table of Contents Action Target Version
 
 on:
   release:
-    branches:
-      - main
     types: [published, edited]
-
-permissions:
-  contents: write
+  workflow_dispatch: 
 
 jobs:
   update-example:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -27,4 +25,11 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add .github/workflows/update-toc.yml
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update Table of Contents" && git push)
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update .github/workflows/update-toc.yml to target ${VERSION}"
+            git push origin HEAD:${GITHUB_REF#refs/heads/}
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
