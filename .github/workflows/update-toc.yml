@@ -18,8 +18,8 @@ jobs:
       - name: Generate Table of Contents
         uses: Sceleratis/markdown-table-of-contents-generator-action@main
         with:
+          exclude-root: 'true'
           table-file: 'README.md'
-          exclude-root: 'trudfsdfasdfasdfe'
       
       - name: Commit and push if changes
         run: |
