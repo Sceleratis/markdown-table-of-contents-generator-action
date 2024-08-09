@@ -2,8 +2,6 @@ name: Update Table of Contents Action Target Version
 
 on:
   release:
-    branches:
-      - main
     types: [published, edited]
 
 jobs:
@@ -20,12 +18,25 @@ jobs:
         run: |
           VERSION="${{ github.ref_name }}"
           sed -i 's/Sceleratis\/markdown-table-of-contents-generator-action@v[0-9.]*/Sceleratis\/markdown-table-of-contents-generator-action@'${VERSION}'/g' .github/workflows/update-toc.yml
-        
+
       - name: Commit and push if changed
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add .github/workflows/update-toc.yml
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update Table of Contents" && git push)
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git checkout -b temp-branch
+            git commit -m "Update Table of Contents to target version ${VERSION}"
+            git push origin temp-branch:main
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete temporary branch
+        if: always()
+        run: |
+          git push origin --delete temp-branch || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
