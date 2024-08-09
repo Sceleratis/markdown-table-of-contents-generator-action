@@ -19,6 +19,7 @@ jobs:
           table-file: 'README.md'
           root-path: '.'
           exclude-root: false
+          no-directory-links: false
           file-extension: '.md'
           primary-file-name: 'README.md'
           toc-start-tag: '<!-- toc-start -->'

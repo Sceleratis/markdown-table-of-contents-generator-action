@@ -37,6 +37,7 @@ def main():
     global toc_marker_start
     global toc_marker_end
     global toc_ignore_directory_file
+    global no_directory_links
 
     # Print passed arguments.
     print(f"Passed Arguments: {' '.join(sys.argv[1:])}")
@@ -51,6 +52,7 @@ def main():
     parser.add_argument('--toc-start-tag',          default='<!-- toc-start -->',   help='Table of contents start tag that indicates the start of the table of contents in the target file where the table of contents will be generated. (default: %(default)s)')
     parser.add_argument('--toc-end-tag',            default='<!-- toc-end -->',     help='Table of contents end tag that indicates the start of the table of contents in the target file where the table of contents will be generated. (default: %(default)s)')
     parser.add_argument('--toc-ignore-file-name',   default='.toc-ignore',          help='Name of file that indicates a directory should be ignored. (default: %(default)s)')
+    parser.add_argument('--no-directory-links',     action='store_true',            help='If provided, directory entries will not link to their associated directory. (default: %(default)s)')
     
     # Parse arguments.
     args = parser.parse_args()
@@ -65,6 +67,7 @@ def main():
     toc_marker_start = args.toc_start_tag
     toc_marker_end = args.toc_end_tag
     toc_ignore_directory_file = args.toc_ignore_file_name
+    no_directory_links = args.no_directory_links
     
     # Generate the table of contents.
     update_contents()
@@ -248,19 +251,26 @@ def generate_toc() -> List[TableEntry]:
                 dir_order = get_order(readme_contents)
                 
                 # Encode the path for the primary file.
-                relative_path = os.path.relpath(table_file, root_path).replace('\\', '/')
+                relative_path = os.path.relpath(table_file if no_directory_links else root, root_path).replace('\\', '/')
                 encoded_path = encode_path(relative_path)
 
+                # Get entry line.
+                entry_line = f'{indent}- [{custom_name}]({encoded_path})'
+
                 # Create a new TableEntry for the primary file.
-                print(f"Creating Primary File Entry as Directory: {custom_name}")
-                dir_entry = TableEntry(depth, dir_order, f'{indent}- [{custom_name}]({encoded_path})')
+                print(f"Creating Primary File Entry as Directory: {entry_line}")
+                dir_entry = TableEntry(depth, dir_order, entry_line)
             else:
                 print(f"Ignoring File: {readme_file}")
         
         # If no valid primary file is found, use the directory name as the primary file.
         if dir_entry is None:
-            print(f"Creating Normal Directory Entry: {os.path.basename(root)}")
-            dir_entry = TableEntry(depth, dir_order, f'{indent}- {os.path.basename(root)}')
+            relative_path = os.path.relpath(root, root_path).replace('\\', '/')
+            encoded_path = encode_path(relative_path)
+            entry_line = f'{indent}- [{os.path.basename(root)}]({encoded_path})' if not no_directory_links else f'{indent}- {os.path.basename(root)}'
+
+            print(f"Creating Normal Directory Entry: {entry_line}")
+            dir_entry = TableEntry(depth, dir_order, entry_line)
 
         # Add the directory entry to the table of contents.
         toc[root] = dir_entry
