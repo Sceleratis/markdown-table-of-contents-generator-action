@@ -19,7 +19,7 @@ jobs:
         uses: Sceleratis/markdown-table-of-contents-generator-action@main
         with:
           table-file: 'README.md'
-          # Add any other inputs you want to customize
+          exclude-root: 'true'
       
       - name: Commit and push if changes
         run: |
