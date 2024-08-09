@@ -257,7 +257,7 @@ def generate_toc() -> List[TableEntry]:
                 print(f"Ignoring File: {readme_file}")
         
         # If no valid primary file is found, use the directory name as the primary file.
-        if not dir_entry:
+        if dir_entry is None:
             print(f"Creating Normal Directory Entry: {os.path.basename(root)}")
             dir_entry = TableEntry(depth, dir_order, f'{indent}- {os.path.basename(root)}')
 
@@ -267,14 +267,14 @@ def generate_toc() -> List[TableEntry]:
         # Get parent directory.   
         parent_dir = os.path.dirname(root)
         print(f"Checking Parent Directory: {parent_dir}")
-
+        
         # Check if the parent directory is in the table of contents and add the directory entry as a child.
         if parent_dir in toc:
             print(f"Adding Directory Entry as Child of: {parent_dir}")
             toc[parent_dir].children.append(dir_entry)
         
         for file in files:
-            if file.endswith(file_extension) and file.lower() != primary_file_name:
+            if file.endswith(file_extension) and file.lower() != primary_file_name.lower():
                 # Get the full path of the file.
                 file_path = os.path.join(root, file)
                 print(f"Found File: {file_path}")
