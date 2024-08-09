@@ -3,11 +3,9 @@ name: Update Table of Contents Action Target Version
 on:
   release:
     types: [published, edited]
-  workflow_dispatch: 
 
 permissions:
   contents: write
-  workflows: write
 
 jobs:
   update-example:
