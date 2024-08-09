@@ -6,6 +6,16 @@ Used to automatically generate a table of contents in a target file from all Mar
 
 ## Table of Contents
 <!-- toc-start -->
+- [Information](.)
+  - [Examples](Examples)
+    - [Renamed Directory Entry Example](Examples/Renamed%20Folder%20Example)
+    - [Sub File Example](Examples/SubFileExample.md)
+    - [Ordered Group Example](Examples/Ordered%20Group%20Example)
+      - [SomeFile (1)](Examples/Ordered%20Group%20Example/SomeFile%20%281%29.md)
+      - [AnotherFile (2)](Examples/Ordered%20Group%20Example/AnotherFile%20%282%29.md)
+      - [TheLastFile (3)](Examples/Ordered%20Group%20Example/TheLastFile%20%283%29.md)
+    - [Sub-Group Examples](Examples/Sub-Group%20Examples)
+      - [Plain-File](Examples/Sub-Group%20Examples/Plain-File.md)
 <!-- toc-end -->
 
 
