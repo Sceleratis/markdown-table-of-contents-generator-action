@@ -25,7 +25,7 @@ inputs:
   toc-start-tag:
     description: 'Table of contents start tag'
     required: false
-    default: '<!-- toc-start-->'
+    default: '<!-- toc-start -->'
   toc-end-tag:
     description: 'Table of contents end tag'
     required: false
