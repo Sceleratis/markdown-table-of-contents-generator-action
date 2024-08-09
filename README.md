@@ -23,7 +23,7 @@ Used to automatically generate a table of contents in a target file from all Mar
 
 Any Markdown (`.md`) files added to this repository will automatically be indexed and added to the above table of contents.
 
-Table of Contents is automatically removed and regenerated between the first set of table of content tags, as indicated by `<!-- TOC START -->` and `<!-- TOC END -->`. This process happens automatically via the `Update Table of Contents` action specified by the [update-toc.yml](.github/workflows/update-toc.yml) in [.github/workflows](.github/workflows) which you can copy for your own repository for the same functionality.
+Table of Contents is automatically removed and regenerated between the first set of table of content tags, as indicated by `<!-- TOC START -->` and `<!-- TOC END -->`. This process happens automatically via the `Update Table of Contents` action specified by the [update-toc.yml](.github/workflows/update-toc.yml) in [.github/workflows](.github/workflows) which you can copy for your own repository for the same functionality. This file will be automatically updated with every release to point toward the current release version of this action. If you would prefer to always be in sync with the main branch of this repository, replace the version number with `main`. 
 
 Table update functionality is handled via the [toc-generator.py](scripts/toc-generator.py) Python (3.x) script in the [scripts](scripts) folder.
 
