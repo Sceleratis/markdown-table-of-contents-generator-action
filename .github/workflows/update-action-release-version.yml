@@ -9,7 +9,7 @@ on:
           description: 'Version to update to (e.g., v1.0.1)'
           required: true
   
-  jobs:
+jobs:
     update-example:
       runs-on: ubuntu-latest
       steps:
