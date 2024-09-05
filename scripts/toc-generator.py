@@ -238,8 +238,8 @@ def generate_toc() -> List[TableEntry]:
             print(f"Found Primary File: {readme_file}")
 
             # Read the contents of the primary file.
-            table_file = os.path.join(root, readme_file)
-            with open(table_file, 'r', encoding='utf-8') as file:
+            readme_path = os.path.join(root, readme_file)
+            with open(readme_path, 'r', encoding='utf-8') as file:
                 readme_contents = file.read()
             
             # Check if the primary file should be ignored.
@@ -251,7 +251,7 @@ def generate_toc() -> List[TableEntry]:
                 dir_order = get_order(readme_contents)
                 
                 # Encode the path for the primary file.
-                relative_path = os.path.relpath(table_file if no_directory_links else root, root_path).replace('\\', '/')
+                relative_path = os.path.relpath(readme_path if no_directory_links else root, root_path).replace('\\', '/')
                 encoded_path = encode_path(relative_path)
 
                 # Get entry line.
