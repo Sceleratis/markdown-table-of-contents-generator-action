@@ -69,6 +69,16 @@ def main():
     toc_ignore_directory_file = args.toc_ignore_file_name
     no_directory_links = args.no_directory_links
     
+    print(f"Table File: {table_file}")
+    print(f"Root Path: {root_path}")
+    print(f"Exclude Root Directory: {exclude_root_directory}")
+    print(f"File Extension: {file_extension}")
+    print(f"Primary File Name: {primary_file_name}")
+    print(f"Table of Contents Start Tag: {toc_marker_start}")
+    print(f"Table of Contents End Tag: {toc_marker_end}")
+    print(f"Table of Contents Ignore File Name: {toc_ignore_directory_file}")
+    print(f"No Directory Links: {no_directory_links}")
+    
     # Generate the table of contents.
     update_contents()
 
@@ -129,8 +139,16 @@ def find_file(directory: str, file_name: str, case_sensitive: bool=False) -> Opt
     """
     if not case_sensitive:
         file_name = file_name.lower()
-    return next((entry.name for entry in os.scandir(directory) 
+    
+    print(f"Searching for File: {file_name} in Directory: {directory}")
+    
+    found_file = next((entry.name for entry in os.scandir(directory) 
         if (entry.name.lower() if not case_sensitive else entry.name) == file_name), None)
+    
+    if found_file:
+        return os.path.join(directory, found_file)
+    else:
+        return None
 
 def include_directory(directory: str) -> bool:
     """
@@ -238,8 +256,7 @@ def generate_toc() -> List[TableEntry]:
             print(f"Found Primary File: {readme_file}")
 
             # Read the contents of the primary file.
-            readme_path = os.path.join(root, readme_file)
-            with open(readme_path, 'r', encoding='utf-8') as file:
+            with open(readme_file, 'r', encoding='utf-8') as file:
                 readme_contents = file.read()
             
             # Check if the primary file should be ignored.
@@ -251,7 +268,7 @@ def generate_toc() -> List[TableEntry]:
                 dir_order = get_order(readme_contents)
                 
                 # Encode the path for the primary file.
-                relative_path = os.path.relpath(readme_path if no_directory_links else root, root_path).replace('\\', '/')
+                relative_path = os.path.relpath(readme_file if no_directory_links else root, root_path).replace('\\', '/')
                 encoded_path = encode_path(relative_path)
 
                 # Get entry line.
@@ -355,8 +372,8 @@ def update_contents():
     """
 
     # Find the target Markdown file to update.
-    print(f"Searching for Target File: {table_file}")
-    target_file = find_file(root_path, table_file, case_sensitive=False)
+    #print(f"Searching for Target File: {table_file}")
+    target_file = table_file #find_file(root_path, table_file, case_sensitive=False)
 
     # Read the target file's contents.
     print(f"Reading Target File: {target_file}")
