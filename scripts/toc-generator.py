@@ -223,22 +223,31 @@ def generate_toc() -> List[TableEntry]:
     # Determine the depth offset based on whether the root directory should be excluded.
     depth_offset = 1 if exclude_root_directory else 0
     
-    for root, dirs, files in os.walk(root_path):
+    # Normalize the root path.
+    normalized_root_path = root_path.replace('/', os.sep).rstrip(os.sep)
+    
+    # Get root depth count.
+    root_depth = normalized_root_path.count(os.sep) + depth_offset
+    
+    print(f"Root Depth: {root_depth}")
+    
+    # Scan all directories and subdirectories.
+    for path, dirs, files in os.walk(normalized_root_path):
+        # Determine the depth of the current directory.
+        depth = path.rstrip(os.sep).count(os.sep) - root_depth #- depth_offset
+        
         # Print the current directory being scanned.
-        print(f"Scanning Directory: {root}")
+        print(f"(Depth: {depth}) Scanning Directory: {path}")
 
         # Check if this is the root directory and if it should be excluded.
-        if exclude_root_directory and root == root_path:
-            print(f"Excluding Root Directory: {root}")
+        if exclude_root_directory and path == root_path:
+            print(f"(Depth: {depth}) Excluding Root Directory: {path}")
             continue
         
         # Check if the directory should be ignored.
-        if not include_directory(root):
-            print(f"Ignoring Directory: {root}")
+        if not include_directory(path):
+            print(f"(Depth: {depth}) Ignoring Directory: {path}")
             continue
-        
-        # Determine the depth of the current directory.
-        depth = root[len(root_path):].count(os.sep) - depth_offset
         
         # Generate the indentation for the current directory.
         indent = '  ' * depth
@@ -248,12 +257,12 @@ def generate_toc() -> List[TableEntry]:
         dir_entry = None
 
         # Check if the directory contains a primary file.
-        print(f"Searching for Primary File: {primary_file_name}")
-        readme_file = find_file(root, primary_file_name, case_sensitive=False)
+        print(f"(Depth: {depth}) Searching for Primary File: {primary_file_name}")
+        readme_file = find_file(path, primary_file_name, case_sensitive=False)
 
         # If a primary file is found, use it as the primary file for the directory.
         if readme_file:
-            print(f"Found Primary File: {readme_file}")
+            print(f"(Depth: {depth}) Found Primary File: {readme_file}")
 
             # Read the contents of the primary file.
             with open(readme_file, 'r', encoding='utf-8') as file:
@@ -262,59 +271,59 @@ def generate_toc() -> List[TableEntry]:
             # Check if the primary file should be ignored.
             if not ignore_file(readme_contents):
                 # Get the custom name for the primary file if it exists.
-                custom_name = get_custom_name(readme_contents) or os.path.basename(root)
+                custom_name = get_custom_name(readme_contents) or os.path.basename(path)
                 
                 # Get the order group for the file.
                 dir_order = get_order(readme_contents)
                 
                 # Encode the path for the primary file.
-                relative_path = os.path.relpath(readme_file if no_directory_links else root, root_path).replace('\\', '/')
+                relative_path = os.path.relpath(readme_file if no_directory_links else path, root_path).replace('\\', '/')
                 encoded_path = encode_path(relative_path)
 
                 # Get entry line.
                 entry_line = f'{indent}- [{custom_name}]({encoded_path})'
 
                 # Create a new TableEntry for the primary file.
-                print(f"Creating Primary File Entry as Directory: {entry_line}")
+                print(f"(Depth: {depth}) Creating Primary File Entry as Directory: {entry_line}")
                 dir_entry = TableEntry(depth, dir_order, entry_line)
             else:
-                print(f"Ignoring File: {readme_file}")
+                print(f"(Depth: {depth}) Ignoring File: {readme_file}")
         
         # If no valid primary file is found, use the directory name as the primary file.
         if dir_entry is None:
-            relative_path = os.path.relpath(root, root_path).replace('\\', '/')
+            relative_path = os.path.relpath(path, root_path).replace('\\', '/')
             encoded_path = encode_path(relative_path)
-            entry_line = f'{indent}- [{os.path.basename(root)}]({encoded_path})' if not no_directory_links else f'{indent}- {os.path.basename(root)}'
+            entry_line = f'{indent}- [{os.path.basename(path)}]({encoded_path})' if not no_directory_links else f'{indent}- {os.path.basename(path)}'
 
-            print(f"Creating Normal Directory Entry: {entry_line}")
+            print(f"(Depth: {depth}) Creating Normal Directory Entry: {entry_line}")
             dir_entry = TableEntry(depth, dir_order, entry_line)
 
         # Add the directory entry to the table of contents.
-        toc[root] = dir_entry
+        toc[path] = dir_entry
 
         # Get parent directory.   
-        parent_dir = os.path.dirname(root)
-        print(f"Checking Parent Directory: {parent_dir}")
+        parent_dir = os.path.dirname(path)
+        print(f"(Depth: {depth}) Checking Parent Directory: {parent_dir}")
         
         # Check if the parent directory is in the table of contents and add the directory entry as a child.
         if parent_dir in toc:
-            print(f"Adding Directory Entry as Child of: {parent_dir}")
+            print(f"(Depth: {depth}) Adding Directory Entry as Child of: {parent_dir}")
             toc[parent_dir].children.append(dir_entry)
         
         for file in files:
             if file.endswith(file_extension) and file.lower() != primary_file_name.lower():
                 # Get the full path of the file.
-                file_path = os.path.join(root, file)
-                print(f"Found File: {file_path}")
+                file_path = os.path.join(path, file)
+                print(f"(Depth: {depth + 1}) Found File: {file_path}")
 
                 # Read the contents of the file.
-                print(f"Reading File Contents: {file_path}")
+                print(f"(Depth: {depth + 1}) Reading File Contents: {file_path}")
                 with open(file_path, 'r', encoding='utf-8') as f:
                     file_contents = f.read()
 
                 # Check if the file should be ignored.
                 if ignore_file(file_contents):
-                    print(f"Ignoring File: {file}")
+                    print(f"(Depth: {depth + 1}) Ignoring File: {file}")
                     continue
                 
                 # Get the order group for the file.
@@ -333,7 +342,7 @@ def generate_toc() -> List[TableEntry]:
                 file_entry = TableEntry(depth + 1, file_order, f'{indent}  - [{custom_name}]({encoded_path})')
 
                 # Add the file entry to the table of contents.
-                print(f"Adding File Entry: {file_entry}")
+                print(f"(Depth: {depth + 1}) Adding File Entry: {file_entry}")
                 dir_entry.children.append(file_entry) 
     
     # Sort the table of contents entries.
