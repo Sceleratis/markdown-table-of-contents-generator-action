@@ -21,7 +21,7 @@ Used to automatically generate a table of contents in a target file from all Mar
 
 ## Adding Documentation Files
 
-Any Markdown (`.md`) files added to this repository will automatically be indexed and added to the above table of contents.
+Any Markdown (`.md`) files added to the repository will automatically be indexed and added to the above table of contents.
 
 Table of Contents is automatically removed and regenerated between the first set of table of content tags, as indicated by `<!-- TOC START -->` and `<!-- TOC END -->`. This process happens automatically via the `Update Table of Contents` action specified by the [update-toc.yml](.github/workflows/update-toc.yml) in [.github/workflows](.github/workflows). You can copy for your own repository for the same functionality though the version in this repository's workflows folder is based on the main branch. If you would rather only use specific release snapshots, the [example-update-toc-action.yml](example-update-toc-action.yml) in this directory is automatically updated to point toward whatever the most current release is and is otherwise identical.
 
