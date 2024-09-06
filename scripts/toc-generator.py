@@ -229,6 +229,7 @@ def generate_toc() -> List[TableEntry]:
     # Get root depth count.
     root_depth = normalized_root_path.count(os.sep) + depth_offset
     
+    print(f"Normalized Root Path: {normalized_root_path}")
     print(f"Root Depth: {root_depth}")
     
     # Scan all directories and subdirectories.
@@ -337,13 +338,20 @@ def generate_toc() -> List[TableEntry]:
 
                 # Encode the path for the file.
                 encoded_path = encode_path(relative_path)
+                
+                # Get file indent.
+                file_indent = '  ' * (depth + 1)
 
                 # Create a new TableEntry for the file.
-                file_entry = TableEntry(depth + 1, file_order, f'{indent}  - [{custom_name}]({encoded_path})')
+                file_entry = TableEntry(depth + 1, file_order, f'{file_indent}- [{custom_name}]({encoded_path})')
 
                 # Add the file entry to the table of contents.
-                print(f"(Depth: {depth + 1}) Adding File Entry: {file_entry}")
-                dir_entry.children.append(file_entry) 
+                if depth + 1 == 0:
+                    print(f"(Depth: {depth + 1}) Adding File Entry as Root File: {file_entry}")
+                    toc[file_path] = file_entry
+                else:
+                    print(f"(Depth: {depth + 1}) Adding File Entry as Child: {file_entry}")
+                    dir_entry.children.append(file_entry) 
     
     # Sort the table of contents entries.
     print("Sorting Table of Contents Entries")
