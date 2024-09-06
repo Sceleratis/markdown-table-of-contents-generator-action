@@ -241,9 +241,9 @@ def generate_toc() -> List[TableEntry]:
         print(f"(Depth: {depth}) Scanning Directory: {path}")
 
         # Check if this is the root directory and if it should be excluded.
-        if exclude_root_directory and path == root_path:
-            print(f"(Depth: {depth}) Excluding Root Directory: {path}")
-            continue
+        #if exclude_root_directory and path == root_path:
+        #    print(f"(Depth: {depth}) Excluding Root Directory: {path}")
+        #    continue
         
         # Check if the directory should be ignored.
         if not include_directory(path):
