@@ -278,7 +278,7 @@ def generate_toc() -> List[TableEntry]:
                 dir_order = get_order(readme_contents)
                 
                 # Encode the path for the primary file.
-                relative_path = os.path.relpath(readme_file if no_directory_links else path, root_path).replace('\\', '/')
+                relative_path = os.path.relpath(readme_file if no_directory_links else path, os.path.dirname(table_file)).replace('\\', '/')
                 encoded_path = encode_path(relative_path)
 
                 # Get entry line.
@@ -292,7 +292,7 @@ def generate_toc() -> List[TableEntry]:
         
         # If no valid primary file is found, use the directory name as the primary file.
         if dir_entry is None:
-            relative_path = os.path.relpath(path, root_path).replace('\\', '/')
+            relative_path = os.path.relpath(path, os.path.dirname(table_file)).replace('\\', '/')
             encoded_path = encode_path(relative_path)
             entry_line = f'{indent}- [{os.path.basename(path)}]({encoded_path})' if not no_directory_links else f'{indent}- {os.path.basename(path)}'
 
@@ -334,7 +334,7 @@ def generate_toc() -> List[TableEntry]:
                 custom_name = get_custom_name(file_contents) or os.path.splitext(file)[0]
                 
                 # Generate the indentation for the file.
-                relative_path = os.path.relpath(file_path, root_path).replace('\\', '/')
+                relative_path = os.path.relpath(file_path, os.path.dirname(table_file)).replace('\\', '/')
 
                 # Encode the path for the file.
                 encoded_path = encode_path(relative_path)
